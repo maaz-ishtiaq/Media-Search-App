@@ -1,37 +1,45 @@
-import React, { use } from 'react'
-import { useSelector,useDispatch } from 'react-redux'
-import {clearcollection} from '../redux/features/collectionSlice'
-import Collectioncard from './Collectioncard' 
-const Collection = ({items}) => {
-  const  collection = useSelector((store) => store.collection.items)
-      const dispatch = useDispatch()
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearcollection } from '../redux/features/collectionSlice';
+import Collectioncard from './Collectioncard';
 
-  const removefromcollection = (items)=>{
-    dispatch(clearcollection(items))
-  }
+const Collection = () => { // Removed unused 'items' prop
+    const collection = useSelector((store) => store.collection.items);
+    const dispatch = useDispatch();
 
-  return (
-    <div className='px-20 py-5'>
-       {collection.length > 0 ? <div className='flex justify-between items-center'>
-        <h2 className='text-black text-lg p-4'>Your Collection</h2>
-        <button onClick={()=>{
-          removefromcollection(items)
-        }} className='bg-red-600 active:scale-95 px-4 py-2 text-white rounded-md'>Clear Collection</button>
-      </div>:
-      <h1 className=' text-[30px] text-black text-center absolute top-[40%] left-[40%] '>Collection is 
-        Empty!
-      </h1>
-      }
-    <div className='flex gap-9 py-6 px-8'>
-      {collection.map((items, idx) => {
-        return <div key={idx}>
-          <Collectioncard items={items} />
+    const clearAllCollection = () => { // Renamed for clarity
+        dispatch(clearcollection());
+    };
+
+    if (collection.length === 0) {
+        return (
+            <div className="flex justify-center items-center h-[calc(100vh-200px)]">
+                <h1 className='text-3xl text-gray-500'>
+                    Collection is Empty!
+                </h1>
+            </div>
+        );
+    }
+
+    return (
+        <div className='px-4 sm:px-8 py-5'>
+            <div className='flex justify-between items-center mb-4'>
+                <h2 className='text-black text-xl sm:text-2xl font-bold'>Your Collection</h2>
+                <button
+                    onClick={clearAllCollection}
+                    className='bg-red-600 hover:bg-red-700 active:scale-95 px-4 py-2 text-white rounded-md transition-all'
+                >
+                    Clear Collection
+                </button>
+            </div>
+
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4'>
+                {collection.map((item) => (
+                    <Collectioncard key={item.id} items={item} />
+                ))}
+            </div>
         </div>
-        
-      })}
-      </div>
-     
-    </div>
-  )
-}
-export default Collection
+    );
+};
+
+export default Collection;
