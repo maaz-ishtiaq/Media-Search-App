@@ -1,45 +1,42 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setQuery } from '../redux/features/searchSlice'
+import { setQuery } from '../redux/features/searchSlice';
 
 function Searchbar() {
-    const [text, settext] = useState('')
-
+    const [text, setText] = useState('');
     const dispatch = useDispatch();
 
-    const submithandler = (e) => {
+    const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(setQuery(text))
-        settext('')
-    }
+        if (text.trim()) {
+            dispatch(setQuery(text));
+            setText('');
+        }
+    };
 
     return (
-        <>
-            <div>
-                <form
-                    onClick={(e) => {
-                        submithandler(e)
-                    }}
-                    className='flex py-10 px-24 gap-5 bg-gray-900'
+        <div className="bg-gray-900">
+            <form
+                onSubmit={submitHandler}
+                className='flex items-center py-10 px-4 sm:px-8 md:px-16 lg:px-24 gap-2 sm:gap-4'
+            >
+                <input
+                    type="text"
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    required
+                    placeholder='Search for photos, videos, gifs...'
+                    className='px-4 py-3 text-white rounded outline-none border-2 border-gray-600 focus:border-indigo-500 w-full bg-gray-800 transition-colors'
+                />
+                <button
+                    type="submit"
+                    className='px-4 sm:px-6 py-3 text-white active:scale-95 rounded outline-none border-2 border-gray-600 hover:bg-gray-700 transition-all'
                 >
-                    <input type="text"
-                        value={text}
-                        onChange={(e) => {
-                            settext(e.target.value)
-                        }}
-                        required
-                        placeholder='Search Anything....'
-                        className='px-4 py-3 text-white rounded outline-none border-2 w-full bg-gray-900 border-5 '
-                    />
-
-                    <button
-                        className='px-4 py-3 text-white active:scale-95 rounded outline-none border-2 border-white-900  '>
-                        Search
-                    </button>
-                </form>
-            </div>
-        </>
-    )
+                    Search
+                </button>
+            </form>
+        </div>
+    );
 }
 
-export default Searchbar
+export default Searchbar;

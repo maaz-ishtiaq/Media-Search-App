@@ -67,13 +67,9 @@ const getData = async () => {
     
 return (
     <>
-    <div className='flex justify-between w-full flex-wrap overflow-auto px-10'>
-        {results.map((items,idx)=>{
-            
-            return <div key={idx}>
-                <ResultGrid items={items} />
-            </div>
-            
+    <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 px-10'>
+        {results.map((items)=>{
+            return <ResultGrid key={items.id} items={items} />
         })}
     </div>
     </>
